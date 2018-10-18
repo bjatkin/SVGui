@@ -1,5 +1,5 @@
 function renderView() {
-    let svgData = allElements.reduce((acc, element) => acc += element.render(), '');
+    let svgData = AllInstances.reduce((acc, element) => acc += element.render(), '');
 
     let screen = $('#main');
     screen.empty();

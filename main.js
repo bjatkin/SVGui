@@ -1,8 +1,4 @@
-let allElements = [];
-let store = {
-    dispatch: function(event) {
-    }
-};
+let AllInstances = [];
 
 function SVGui(construct = {}) {
     this.svg = construct.svg;
@@ -14,7 +10,6 @@ function SVGui(construct = {}) {
     if (construct.methods) {
         this.methods = construct.methods;
     }
-    allElements.push(this);
     
     this.layer = 0;
 }
@@ -24,20 +19,23 @@ SVGui.prototype.methods = {
     mouseUp: () => {}
 };
 
-SVGui.prototype.underPoint = function(x, y) {
-    console.log(x, y);
-    console.log(x > this.x && x < this.x + 300 && y > this.y && y < this.y + 100);
-    return (x > this.x && x < this.x + 300 && y > this.y && y < this.y + 100);
-}
-
-SVGui.prototype.move = function(x, y) {
-    this.x += x;
-    this.y += y;
-    renderView();
+SVGui.prototype.instantiate = function(state) {
+    if (!state) {
+        state = this.state;
+    }
+    return new SVGuiInstance(this, state);
 };
 
-SVGui.prototype.render = function() {
-    let render = this.svg;
+function SVGuiInstance(parent, state) {
+    this.parent = parent;
+    this.state = state;
+    this.x = 0;
+    this.y = 0;
+    AllInstances.push(this);
+}
+
+SVGuiInstance.prototype.render = function() {
+    let render = this.parent.svg;
     for (var prop in this.state) {
         if (this.state.hasOwnProperty(prop)) {
             render = render.replace(new RegExp('{{'+prop+'}}', "g"), this.state[prop]);
@@ -46,48 +44,14 @@ SVGui.prototype.render = function() {
     return `<g transform="translate(${this.x},${this.y})">`+render+'</g>';
 };
 
-window.addEventListener('mousedown', ev => {
-    createAction('mousedown', ev);
-});
-
-window.addEventListener('mouseup', ev => {
-    createAction('mouseup', ev);
-});
-
-function createAction(type, ev) {
-    switch (type ) {
-        case 'mousedown':
-            {
-                let allClicked = allElements.filter(
-                    ui => ui.underPoint(ev.clientX, ev.clientY)
-                );
-
-                if (allClicked.length == 0) {
-                    return;
-                }
-                allClicked.forEach(ui => ui.methods.mouseDown.bind(ui)());
-            }
-        break;
-        case 'mouseup':
-            {
-                let allClicked = allElements.filter(
-                    ui => ui.underPoint(ev.clientX, ev.clientY)
-                );
-
-                if (allClicked.length == 0) {
-                    return;
-                }
-                allClicked.forEach(ui => ui.methods.mouseUp.bind(ui)());
-            }
-        break;
-        default:
-            console.log('unkonwn event');
-        break;
-    }
+SVGuiInstance.prototype.move = function(x, y) {
+    this.x += x;
+    this.y += y;
     renderView();
 }
 
-function event(name){
-    this.name = name;
+SVGuiInstance.prototype.underPoint = function(x, y) {
+    console.log(x, y);
+    console.log(x > this.x && x < this.x + 300 && y > this.y && y < this.y + 100);
+    return (x > this.x && x < this.x + 300 && y > this.y && y < this.y + 100);
 }
-

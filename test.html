@@ -16,64 +16,53 @@
     <script src="utils.js"></script>
     <script src="main.js"></script>
     <script src="view.js"></script>
+    <script src="events.js"></script>
     <script>
         let button = new SVGui({
             svg: `<circle cx="50" cy="50" r="40" fill="{{color}}" />
                     <rect x="50" y="10" width="300" height="80" fill="{{color}}"/>
                     <circle cx="350" cy="50" r="40" fill="{{color}}" />
                 
-                    <text x="85" y="75" fill="white" style="font: bold 70px sans-serif; fill: white;">Button</text>`,
+                    <text x="85" y="73" fill="white" style="font: bold 70px sans-serif; fill: white;">{{text}}</text>`,
             state: {
                 color: '#4286f4',
+                primaryColor: '#4286f4',
+                secondaryColor: '#224d91',
+                text: 'Button',
             },
             methods: {
                 on_click: function() {
-                    if (this.state.color == '#4286f4') {
-                        this.state.color = '#224d91';
+                    if (this.state.color == this.state.primaryColor) {
+                        this.state.color = this.state.secondaryColor;
                     } else {
-                        this.state.color = '#4286f4';
+                        this.state.color = this.state.primaryColor;
                     }
                 },
                 mouseDown: function() {
-                    this.state.color = '#224d91';
-                    button2.move(5, 0);
+                    this.state.color = this.state.secondaryColor;
+                    if (this.state.target != null) {
+                        this.state.target.move(5, 0);
+                    }
                 },
                 mouseUp: function() {
-                    this.state.color = '#4286f4';
+                    this.state.color = this.state.primaryColor;
                 },
             }
         });
-        button.x = 0;
-        button.y = 0;
 
-        let button2 = new SVGui({
-            svg: `<circle cx="50" cy="50" r="40" fill="{{color}}" />
-                    <rect x="50" y="10" width="300" height="80" fill="{{color}}"/>
-                    <circle cx="350" cy="50" r="40" fill="{{color}}" />
-                
-                    <text x="85" y="75" fill="white" style="font: bold 70px sans-serif; fill: white;">Button</text>`,
-            state: {
-                color: '#eda93d',
-            },
-            methods: {
-                on_click: function() {
-                    if (this.state.color == '#eda93d') {
-                        this.state.color = '#936822';
-                    } else {
-                        this.state.color = '#eda93d';
-                    }
-                },
-                mouseDown: function() {
-                    this.state.color = '#936822';
-                    button.move(5, 0);
-                },
-                mouseUp: function() {
-                    this.state.color = '#eda93d';
-                }
-            }
-        });
-        button2.x = 0;
-        button2.y = 100;
+        //Create a few instances of our new button
+        Ibutton = button.instantiate();
+        
+        Ibutton2 = button.instantiate(
+            {color: '#eda93d',
+             primaryColor: '#eda93d', 
+             secondaryColor: '#936822', 
+             target: Ibutton,
+             text: 'My Btn',
+            });
+        Ibutton2.y = 100;
+
+        Ibutton.state.target = Ibutton2;
     </script>
 </body>
 </html>
