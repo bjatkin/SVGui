@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>GUI Test</title>
+</head>
+<body>
+    <div id="main"></div>
+    <script
+    src="https://code.jquery.com/jquery-3.3.1.min.js"
+    integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+    crossorigin="anonymous"></script>
+
+    <script src="utils.js"></script>
+    <script src="main.js"></script>
+    <script src="view.js"></script>
+    <script>
+        let button = new SVGui({
+            svg: `<circle cx="50" cy="50" r="40" fill="{{color}}" />
+                    <rect x="50" y="10" width="300" height="80" fill="{{color}}"/>
+                    <circle cx="350" cy="50" r="40" fill="{{color}}" />
+                
+                    <text x="85" y="75" fill="white" style="font: bold 70px sans-serif; fill: white;">Button</text>`,
+            state: {
+                color: '#4286f4',
+            },
+            methods: {
+                on_click: function() {
+                    if (this.state.color == '#4286f4') {
+                        this.state.color = '#224d91';
+                    } else {
+                        this.state.color = '#4286f4';
+                    }
+                },
+                mouseDown: function() {
+                    this.state.color = '#224d91';
+                    button2.move(5, 0);
+                },
+                mouseUp: function() {
+                    this.state.color = '#4286f4';
+                },
+            }
+        });
+        button.x = 0;
+        button.y = 0;
+
+        let button2 = new SVGui({
+            svg: `<circle cx="50" cy="50" r="40" fill="{{color}}" />
+                    <rect x="50" y="10" width="300" height="80" fill="{{color}}"/>
+                    <circle cx="350" cy="50" r="40" fill="{{color}}" />
+                
+                    <text x="85" y="75" fill="white" style="font: bold 70px sans-serif; fill: white;">Button</text>`,
+            state: {
+                color: '#eda93d',
+            },
+            methods: {
+                on_click: function() {
+                    if (this.state.color == '#eda93d') {
+                        this.state.color = '#936822';
+                    } else {
+                        this.state.color = '#eda93d';
+                    }
+                },
+                mouseDown: function() {
+                    this.state.color = '#936822';
+                    button.move(5, 0);
+                },
+                mouseUp: function() {
+                    this.state.color = '#eda93d';
+                }
+            }
+        });
+        button2.x = 0;
+        button2.y = 100;
+    </script>
+</body>
+</html>
