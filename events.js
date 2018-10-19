@@ -6,6 +6,11 @@ window.addEventListener('mouseup', ev => {
     createAction('mouseup', ev);
 });
 
+window.addEventListener('resize', ev => {
+    createAction('resize', ev);
+});
+
+//Change this to a subscription model where if you have the methods defined you are subscribed?
 function createAction(type, ev) {
     switch (type ) {
         case 'mousedown':
@@ -30,6 +35,11 @@ function createAction(type, ev) {
                     return;
                 }
                 allClicked.forEach(ui => ui.parent.methods.mouseUp.bind(ui)());
+            }
+        break;
+        case 'resize':
+            {
+                AllInstances.forEach(ui => ui.parent.methods.onResize.bind(ui)());
             }
         break;
         default:

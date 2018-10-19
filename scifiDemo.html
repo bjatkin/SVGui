@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>GUI Test</title>
+</head>
+<body style="background-color: #021430">
+    <div id="main"></div>
+    <script
+    src="https://code.jquery.com/jquery-3.3.1.min.js"
+    integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+    crossorigin="anonymous"></script>
+
+    <script src="utils.js"></script>
+    <script src="main.js"></script>
+    <script src="view.js"></script>
+    <script src="events.js"></script>
+    <script src="icon.js"></script>
+    <script src="icon2.js"></script>
+    <script src="icon3.js"></script>
+    <script src="pauseIcon.js"></script>
+    <script src="nextIcon.js"></script>
+    <script src="bar.js"></script>
+    <script>
+        Iicon = icon.instantiate();
+        Iicon.move(10, 10);
+        Iicon.scale(0.2, 0.2);
+        Iicon.width = 39;
+        Iicon.height = 39;
+
+        Iicon2 = icon2.instantiate();
+        Iicon2.move(10, 60);
+        Iicon2.scale(-0.2, -0.2);
+        Iicon2.width = 39;
+        Iicon2.height = 39;
+
+        Iicon3 = icon3.instantiate();
+        Iicon3.move(10, 100);
+        Iicon3.scale(-0.2, -0.2);
+        Iicon3.width = 39;
+        Iicon3.height = 39;
+
+        Ipause = pauseIcon.instantiate();
+        Ipause.move($(window).width() / 2 - 110, $(window).height() / 2 - 90);
+        Ipause.scale(5, 5);
+        Ipause.width = 34;
+        Ipause.height = 34;
+
+        Iprev = nextIcon.instantiate();
+        Iprev.state.offset = 230;
+        Iprev.state.watch = Ipause;
+        Iprev.state.flip = true;
+        Iprev.scale(5,5);
+        Iprev.parent.methods.onResize.bind(Iprev)();
+        
+        Inext = nextIcon.instantiate();
+        Inext.state.offset = -45;
+        Inext.state.watch = Ipause;
+        Inext.scale(-5,5);
+        Inext.parent.methods.onResize.bind(Inext)();
+
+        bars = [];
+        let barNum = 40;
+        for(let x = 0; x < barNum; x++){
+            let b = bar.instantiate();
+            b.state.scaler = ((barNum-x)/barNum) + 0.2;
+            b.state.offset = x * 15;
+            b.parent.methods.onResize.bind(b)();
+            bars.push(b);
+        }
+
+        window.setInterval(() => {
+            Iicon.parent.methods.fadeIn.bind(Iicon)(0.01);
+            Iicon2.parent.methods.fadeIn.bind(Iicon2)(0.01);
+            Iicon3.parent.methods.fadeIn.bind(Iicon3)(0.01);
+
+            Ipause.parent.methods.fadeIn.bind(Ipause)(0.01);
+            Inext.parent.methods.fadeIn.bind(Inext)(0.01);
+
+            Iprev.parent.methods.fadeIn.bind(Iprev)(0.01);
+
+            bars.forEach(b => {
+                b.parent.methods.fadeIn.bind(b)(0.1);
+            });
+        }, 1000/60)
+
+        window.setInterval(() => {
+            bars.forEach(b => {
+                b.parent.methods.jump.bind(b)(50, 70);
+            });
+        }, 1000/40);
+    </script>
+</body>
+</html
