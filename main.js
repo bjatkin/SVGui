@@ -1,5 +1,5 @@
 let AllInstances = [];
-
+let AllPrototypes = [];
 function SVGui(construct = {}) {
     this.svg = construct.svg;
     if (construct.state){
@@ -10,12 +10,14 @@ function SVGui(construct = {}) {
     }
     
     this.layer = 0;
+    AllPrototypes.push(this);
 }
 
 SVGui.prototype.methods = {
     mouseDown: () => {},
     mouseUp: () => {},
     onResize: () => {},
+    onHover: () => {},
 };
 
 SVGui.prototype.instantiate = function(state) {
@@ -58,8 +60,11 @@ SVGuiInstance.prototype.scale = function(x, y) {
 };
 
 SVGuiInstance.prototype.underPoint = function(x, y) {
-    if (this.xScale > 0){
+    if (this.xScale > 0 && this.height > 0){
         return (x > this.x && x < this.x + this.width * this.xScale && y > this.y && y < this.y + this.height * this.yScale);
+    }
+    if (this.height < 0){
+        return (x > this.x && x < this.x + this.width * this.xScale && y < this.y && y > this.y + this.height * this.yScale);
     }
     return (x < this.x && x > this.x + this.width * this.xScale && y > this.y && y < this.y + this.height * this.yScale);
 };

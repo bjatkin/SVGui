@@ -26,6 +26,11 @@
     <script src="bar.js"></script>
 
     <script>
+        primaryColor = "#498de5";
+        secondaryColor = "#021430";
+        dangerPrimaryColor = "#ff4528";
+        dangerSecondaryColor = "#300c01";
+
         Iicon = icon.instantiate();
         Iicon.move(10, 10);
         Iicon.scale(0.2, 0.2);
@@ -56,12 +61,16 @@
         Iprev.state.flip = true;
         Iprev.scale(5,5);
         Iprev.parent.methods.onResize.bind(Iprev)();
+        Iprev.width = 34;
+        Iprev.height = 34;
         
         Inext = nextIcon.instantiate();
         Inext.state.offset = -45;
         Inext.state.watch = Ipause;
         Inext.scale(-5,5);
         Inext.parent.methods.onResize.bind(Inext)();
+        Inext.width = 34;
+        Inext.height = 34;
 
         bars = [];
         let barNum = 100;
@@ -70,6 +79,8 @@
             // b.state.scaler = ((barNum-x)/barNum) + 0.2;
             b.state.offset = x * 15;
             b.parent.methods.onResize.bind(b)();
+            b.width = 54;
+            b.height = -134;
             bars.push(b);
         }
 
@@ -93,8 +104,31 @@
         }, 1000/60)
 
         function update() {
+            createAction('mousepos', {clientX: MOUSEX,clientY: MOUSEY});
             renderView();
             window.requestAnimationFrame(update);
+        }
+
+        function setDanger() {
+            AllInstances.forEach(i => {
+                i.state.color = dangerPrimaryColor;
+            });
+            bars.forEach(b => {
+                b.state.defaultScaler = 9;
+                b.state.scaler = 7;
+            });
+            $('body').attr("style", `background-color: ${dangerSecondaryColor}`);
+        }
+
+        function setSafe() {
+            AllInstances.forEach(i => {
+                i.state.color = primaryColor;
+            });
+            bars.forEach(b => {
+                b.state.defaultScaler = 1;
+                b.state.scaler = 1;
+            });
+            $('body').attr("style", `background-color: ${secondaryColor}`);
         }
 
         window.requestAnimationFrame(update);
