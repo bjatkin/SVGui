@@ -46,7 +46,6 @@ function createAction(type, ev) {
             console.log('unkonwn event');
         break;
     }
-    renderView();
 }
 
 function event(name){

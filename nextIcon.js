@@ -7,8 +7,6 @@ let nextIcon = new SVGui({
                 offset: 0,
                 watch: null,
                 flip: false,
-                goalX: 0,
-                goalY: 0,
             },
             methods: {
                 mouseDown: function() {
@@ -20,23 +18,40 @@ let nextIcon = new SVGui({
                     this.state.alpha += speed;
                     if (this.state.alpha > 0.6) {
                         this.state.alpha = 0.6;
-                    } else {
-                        renderView();
                     }
                 },
                 onResize: function() {
                     if ($(window).width() >= 600) {
-                        this.x = this.state.watch.x + this.state.offset;
-                        this.y = this.state.watch.y + 30;
+                        this.state.transitionX = new Animate({
+                            keys: [0, 20],
+                            values: [this.x, this.state.watch.x + this.state.offset],
+                        });
+                        this.state.transitionY = new Animate({
+                            keys: [0, 20],
+                            values: [this.y, this.state.watch.y + 30],
+                        });
+                        // this.x = this.state.watch.x + this.state.offset;
+                        // this.y = this.state.watch.y + 30;
                         this.xScale = (this.state.flip ? 5 : -5);
                         this.yScale = 5;
                     } else {
-                        console.log('the other case');
-                        this.x = this.state.watch.x + 95;
-                        this.y = this.state.watch.y + 180;
+                        this.state.transitionX = new Animate({
+                            keys: [0, 10],
+                            values: [this.x, this.state.watch.x + 95],
+                        });
+                        this.state.transitionY = new Animate({
+                            keys: [0, 10],
+                            values: [this.y, this.state.watch.y + 180],
+                        });
+                        // this.x = this.state.watch.x + 95;
+                        // this.y = this.state.watch.y + 180;
                         this.xScale = (this.state.flip ? 3 : -3);
                         this.yScale = 3;
                     }
+                },
+                transition: function() {
+                    this.x = this.state.transitionX.nextFrame();
+                    this.y = this.state.transitionY.nextFrame();
                 },
             }
         });

@@ -27,14 +27,11 @@ let pauseIcon = new SVGui({
                     this.state.alpha += speed;
                     if (this.state.alpha > 1) {
                         this.state.alpha = 1;
-                    } else {
-                        renderView();
                     }
                 },
                 onResize: function() {
                     this.x = $(window).width() / 2 - 90;
                     this.y = $(window).height() / 2 - 90;
-                    renderView();
                 },
             }
         });

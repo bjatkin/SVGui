@@ -16,13 +16,10 @@ let bar = new SVGui({
                     this.state.alpha += speed;
                     if (this.state.alpha > 0.2) {
                         this.state.alpha = 0.2;
-                    } else {
-                        renderView();
                     }
                 },
                 jump: function(min, max) {
                     this.state.tall = this.state.scaler * (Math.random() * (max - min)) + min;
-                    renderView();
                 },
                 onResize: function() {
                     this.x = this.state.offset;

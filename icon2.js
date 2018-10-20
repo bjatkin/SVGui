@@ -19,8 +19,6 @@ let icon2 = new SVGui({
                     this.state.alpha += speed;
                     if (this.state.alpha > 0.8) {
                         this.state.alpha = 0.8;
-                    } else {
-                        renderView();
                     }
                 },
                 onResize: () => {},
