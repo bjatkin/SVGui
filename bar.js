@@ -32,7 +32,11 @@ let bar = new SVGui({
                 },
                 onHover: function() {
                     this.state.alpha = 0.4;
-                    this.state.scaler = 4;
+                    if (this.state.defaultScaler == 1){
+                        this.state.scaler = 4;
+                    } else {
+                        this.state.scaler = 11;
+                    }
                 }
             }
         });

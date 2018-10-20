@@ -8,6 +8,7 @@ let nextIcon = new SVGui({
                 watch: null,
                 flip: false,
                 color: '#498de5',
+                state: 0,
             },
             methods: {
                 mouseDown: function() {
@@ -23,36 +24,60 @@ let nextIcon = new SVGui({
                 },
                 onResize: function() {
                     if ($(window).width() >= 600) {
-                        this.state.transitionX = new Animate({
-                            keys: [0, 20],
-                            values: [this.x, this.state.watch.x + this.state.offset],
-                        });
-                        this.state.transitionY = new Animate({
-                            keys: [0, 20],
-                            values: [this.y, this.state.watch.y + 30],
-                        });
-                        // this.x = this.state.watch.x + this.state.offset;
-                        // this.y = this.state.watch.y + 30;
+                        if (this.state.state == 1) {
+                            this.state.transitionX = new Animate({
+                                keys: [0, 20],
+                                values: [this.x, this.state.watch.x + this.state.offset],
+                            });
+                            this.state.transitionY = new Animate({
+                                keys: [0, 20],
+                                values: [this.y, this.state.watch.y + 30],
+                            });
+                        } else {
+                            if (this.state.transitionX.frame > 20) {
+                                this.x = this.state.watch.x + this.state.offset;
+                                this.y = this.state.watch.y + 30;
+                                this.state.transitionX = {frame: 100};
+                                this.state.transitionY = {frame: 100};
+                            } else {
+                                this.state.transitionX.values[1] = this.state.watch.x + this.state.offset;
+                                this.state.transitionY.values[1] = this.state.watch.y + 30;
+                            }
+                        }
                         this.xScale = (this.state.flip ? 5 : -5);
                         this.yScale = 5;
+                        this.state.state = 0;
                     } else {
-                        this.state.transitionX = new Animate({
-                            keys: [0, 10],
-                            values: [this.x, this.state.watch.x + 95],
-                        });
-                        this.state.transitionY = new Animate({
-                            keys: [0, 10],
-                            values: [this.y, this.state.watch.y + 180],
-                        });
-                        // this.x = this.state.watch.x + 95;
-                        // this.y = this.state.watch.y + 180;
+                        if (this.state.state == 0){
+                            this.state.transitionX = new Animate({
+                                keys: [0, 10],
+                                values: [this.x, this.state.watch.x + 95],
+                            });
+                            this.state.transitionY = new Animate({
+                                keys: [0, 10],
+                                values: [this.y, this.state.watch.y + 180],
+                            });
+                        } else {
+                            if (this.state.transitionX.frame > 20) {
+                                this.x = this.state.watch.x + 95;
+                                this.y = this.state.watch.y + 180;
+                                this.state.transitionX = {frame: 100};
+                                this.state.transitionY = {frame: 100};
+                            } else {
+                                this.state.transitionX.values[1] = this.state.watch.x + 95;
+                                this.state.transitionY.values[1] = this.state.watch.y + 180;
+                            }
+                        }
                         this.xScale = (this.state.flip ? 3 : -3);
                         this.yScale = 3;
+                        this.state.state = 1;
                     }
                 },
                 transition: function() {
-                    this.x = this.state.transitionX.nextFrame();
-                    this.y = this.state.transitionY.nextFrame();
+                    if (this.state.transitionX.nextFrame){
+                        this.x = this.state.transitionX.nextFrame();
+                        this.y = this.state.transitionY.nextFrame();
+                    }
                 },
                 onHover: function() {
                 }

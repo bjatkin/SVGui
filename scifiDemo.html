@@ -60,6 +60,10 @@
         Iprev.state.watch = Ipause;
         Iprev.state.flip = true;
         Iprev.scale(5,5);
+        Iprev.state.state = $(window).width() >= 600 ? 0 : 1;
+        Iprev.state.transitionX = {frame: 100};
+        Iprev.state.transitionY = {frame: 100};
+        
         Iprev.parent.methods.onResize.bind(Iprev)();
         Iprev.width = 34;
         Iprev.height = 34;
@@ -68,6 +72,10 @@
         Inext.state.offset = -45;
         Inext.state.watch = Ipause;
         Inext.scale(-5,5);
+        Inext.state.state = $(window).width() >= 600 ? 0 : 1;
+        Inext.state.transitionX = {frame: 100};
+        Inext.state.transitionY = {frame: 100};
+        
         Inext.parent.methods.onResize.bind(Inext)();
         Inext.width = 34;
         Inext.height = 34;
@@ -114,7 +122,7 @@
                 i.state.color = dangerPrimaryColor;
             });
             bars.forEach(b => {
-                b.state.defaultScaler = 9;
+                b.state.defaultScaler = 7;
                 b.state.scaler = 7;
             });
             $('body').attr("style", `background-color: ${dangerSecondaryColor}`);
